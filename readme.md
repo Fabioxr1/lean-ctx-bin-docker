@@ -1,5 +1,8 @@
 # Impostazioni MCP (lean-ctx-docker)
 
+Questo progetto implementa un server MCP containerizzato basato sulla libreria ufficiale **[lean-ctx](https://github.com/yvgude/lean-ctx)** (distribuita come pacchetto npm **`lean-ctx-bin`**).
+`lean-ctx` funge da livello di ingegneria del contesto cognitivo per gli agenti AI, ottimizzando le letture dei file, memorizzando in cache il contesto non modificato e comprimendo le risposte per ridurre drasticamente (fino al 99%) il consumo dei token.
+
 Questo documento raccoglie la configurazione dell'MCP sia per Windows che per Linux. 
 Tutti i file descritti di seguito sono inclusi in questa cartella (`lean-ctx-bin`) per garantire la portabilità del repository.
 
