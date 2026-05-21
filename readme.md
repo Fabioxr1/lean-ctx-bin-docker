@@ -67,3 +67,25 @@ Sostituisci `/home/tuo_utente` con il tuo percorso home reale (usa `echo $HOME` 
       ]
     }
 ```
+
+---
+
+## 🛡️ Intelligent Loop Guard & Token Estimator
+
+Questo server MCP include un proxy intermedio (`loop-guard.js`) che fornisce due funzionalità chiave di controllo e telemetria:
+
+### 1. Loop Guard (Protezione Ricorsione)
+Rileva se l'agente AI entra in un loop autonomo infinito. Se lo stesso tool MCP viene invocato con gli stessi identici argomenti per **5 volte consecutive** all'interno di una finestra temporale di **5 secondi**, il proxy blocca la chiamata e restituisce all'IDE una risposta di errore JSON-RPC. Questo previene lo spreco involontario di token e arresta il loop.
+
+### 2. Token Savings Estimator (Stima Risparmio Token)
+Il proxy monitora le transazioni in tempo reale ed effettua una stima dei token risparmiati:
+- **Input**: Confronta la dimensione reale dei file letti sul disco con i dati compressi inviati all'IDE da `lean-ctx` (per esempio, le letture in cache).
+- **Output**: Calcola il risparmio derivante dall'utilizzo del **Token Dense Dialect (TDD)** compressore.
+
+Le metriche aggregate sono salvate in formato JSON in `~/.config/lean-ctx/stats.json` e stampate in tempo reale nel log `stderr` dell'MCP nell'IDE.
+
+
+bash:
+cat ~/.config/lean-ctx/stats.json
+
+

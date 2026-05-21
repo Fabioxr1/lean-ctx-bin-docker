@@ -9,6 +9,9 @@ RUN npm install -g lean-ctx-bin
 # Imposta la directory di lavoro di default nel container
 WORKDIR /app
 
-# Di default, lancia lean-ctx in modalità stdio
-CMD ["lean-ctx"]
+# Copia lo script proxy Loop Guard
+COPY loop-guard.js /app/loop-guard.js
+
+# Di default, lancia il proxy Loop Guard che avvia internamente lean-ctx
+CMD ["node", "/app/loop-guard.js"]
 

@@ -38,8 +38,9 @@ if errorlevel 1 (
     exit /b 1
 )
 
-:: Converti il percorso Windows in percorso WSL
+:: Converti il percorso Windows in percorso WSL per i progetti e la configurazione
 for /f "tokens=*" %%i in ('wsl -d !WSL_DISTRO! wslpath "%PROJECTS_DIR%" <nul') do set "wslPath=%%i"
+for /f "tokens=*" %%i in ('wsl -d !WSL_DISTRO! wslpath "C:\Users\Public\lean-ctx" <nul') do set "wslConfigPath=%%i"
 
 :: Verifica che wslPath non sia vuoto
 if "!wslPath!"=="" (
@@ -48,5 +49,5 @@ if "!wslPath!"=="" (
     exit /b 1
 )
 
-:: Avvia Docker tramite WSL
-wsl -d !WSL_DISTRO! docker run -i --rm -v "!wslPath!:!wslPath!" -v "lean_ctx_data:/root/.config/lean-ctx" -e "LEAN_CTX_DATA_DIR=/root/.config/lean-ctx" -w "!wslPath!" lean-ctx-bin-lean-ctx lean-ctx
+:: Avvia Docker tramite WSL (usa il CMD di default che lancia loop-guard.js)
+wsl -d !WSL_DISTRO! docker run -i --rm -v "!wslPath!:!wslPath!" -v "!wslConfigPath!:/root/.config/lean-ctx" -e "LEAN_CTX_DATA_DIR=/root/.config/lean-ctx" -w "!wslPath!" lean-ctx-bin-lean-ctx

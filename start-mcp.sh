@@ -14,10 +14,10 @@ if [ -f "$ENV_FILE" ]; then
     done < "$ENV_FILE"
 fi
 
-# Avvia Docker nativamente
+# Avvia Docker nativamente (usa il CMD di default che lancia loop-guard.js)
 docker run -i --rm \
   -v "${PROJECTS_DIR}:${PROJECTS_DIR}" \
-  -v "lean_ctx_data:/root/.config/lean-ctx" \
+  -v "$HOME/.config/lean-ctx:/root/.config/lean-ctx" \
   -e "LEAN_CTX_DATA_DIR=/root/.config/lean-ctx" \
   -w "${PROJECTS_DIR}" \
-  lean-ctx-bin-lean-ctx lean-ctx
+  lean-ctx-bin-lean-ctx
