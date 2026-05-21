@@ -3,9 +3,15 @@
 PROJECTS_DIR="$HOME/progetti"
 
 # Carica .env se esiste
+# Uso while+read invece di export $(xargs) per gestire path con spazi
 ENV_FILE="$HOME/.config/lean-ctx/.env"
 if [ -f "$ENV_FILE" ]; then
-    export $(grep -v '^#' "$ENV_FILE" | xargs)
+    while IFS='=' read -r key value; do
+        # Salta commenti e righe vuote
+        [[ "$key" =~ ^#.*$ ]] && continue
+        [[ -z "$key" ]] && continue
+        export "$key=$value"
+    done < "$ENV_FILE"
 fi
 
 # Avvia Docker nativamente

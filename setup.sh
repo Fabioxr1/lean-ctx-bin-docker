@@ -4,6 +4,13 @@ echo "Configurazione ambiente lean-ctx per Linux"
 echo "=============================================="
 echo
 
+# Verifica che Docker sia installato
+if ! command -v docker &>/dev/null; then
+    echo "[AVVISO] Docker non sembra installato o non e nel PATH."
+    echo "Installalo da: https://docs.docker.com/engine/install/"
+    echo
+fi
+
 # 1. Crea la cartella ~/.config/lean-ctx se non esiste
 mkdir -p "$HOME/.config/lean-ctx"
 
@@ -27,6 +34,8 @@ fi
 echo
 echo "=============================================="
 echo "Setup completato con successo!"
-echo "Ricorda di configurare mcp_config.json come descritto in readme.md."
+echo "Ricorda di:"
+echo "  1. Eseguire build.sh per costruire l'immagine Docker"
+echo "  2. Configurare mcp_config.json come descritto in readme.md"
 echo "=============================================="
 echo

@@ -1,30 +1,52 @@
 @echo off
 setlocal enabledelayedexpansion
 
-:: Default PROJECTS_DIR
+:: Defaults
 set "PROJECTS_DIR=%USERPROFILE%\Desktop\progetti"
+set "WSL_DISTRO=Ubuntu"
 
-
-:: Load PROJECTS_DIR from .env if it exists
+:: Load variables from .env if it exists
 if exist "C:\Users\Public\lean-ctx\.env" (
     for /f "usebackq delims== tokens=1,*" %%a in ("C:\Users\Public\lean-ctx\.env") do (
         set "KEY=%%a"
         set "VAL=%%b"
-        if "!KEY!"=="PROJECTS_DIR" (
-            set "PROJECTS_DIR=!VAL!"
-        )
+        if "!KEY!"=="PROJECTS_DIR" set "PROJECTS_DIR=!VAL!"
+        if "!KEY!"=="WSL_DISTRO"   set "WSL_DISTRO=!VAL!"
     )
 )
 
-:: Trim trailing spaces from PROJECTS_DIR if any
-:trim
+:: Trim trailing spaces from PROJECTS_DIR
+:trim_projects
 if "!PROJECTS_DIR:~-1!"==" " (
     set "PROJECTS_DIR=!PROJECTS_DIR:~0,-1!"
-    goto trim
+    goto trim_projects
 )
 
-:: Get WSL path (redirect stdin to nul to prevent consuming piped input)
-for /f "tokens=*" %%i in ('wsl -d Ubuntu wslpath "%PROJECTS_DIR%" ^<nul') do set "wslPath=%%i"
+:: Trim trailing spaces from WSL_DISTRO
+:trim_distro
+if "!WSL_DISTRO:~-1!"==" " (
+    set "WSL_DISTRO=!WSL_DISTRO:~0,-1!"
+    goto trim_distro
+)
 
-:: Start WSL with docker
-wsl -d Ubuntu docker run -i --rm -v "%wslPath%:%wslPath%" -v "lean-ctx-bin_lean_ctx_data:/root/.config/lean-ctx" -e "LEAN_CTX_DATA_DIR=/root/.config/lean-ctx" -w "%wslPath%" lean-ctx-bin-lean-ctx lean-ctx
+:: Verifica che la distro WSL specificata sia disponibile
+wsl -d !WSL_DISTRO! -- echo "" <nul >nul 2>&1
+if errorlevel 1 (
+    echo [ERRORE] La distro WSL "!WSL_DISTRO!" non e disponibile.
+    echo Verifica che WSL sia installato e che il nome della distro sia corretto.
+    echo Puoi cambiare il valore WSL_DISTRO nel file C:\Users\Public\lean-ctx\.env
+    exit /b 1
+)
+
+:: Converti il percorso Windows in percorso WSL
+for /f "tokens=*" %%i in ('wsl -d !WSL_DISTRO! wslpath "%PROJECTS_DIR%" <nul') do set "wslPath=%%i"
+
+:: Verifica che wslPath non sia vuoto
+if "!wslPath!"=="" (
+    echo [ERRORE] Impossibile convertire il percorso in formato WSL: %PROJECTS_DIR%
+    echo Verifica che PROJECTS_DIR nel file .env sia un percorso Windows valido.
+    exit /b 1
+)
+
+:: Avvia Docker tramite WSL
+wsl -d !WSL_DISTRO! docker run -i --rm -v "!wslPath!:!wslPath!" -v "lean_ctx_data:/root/.config/lean-ctx" -e "LEAN_CTX_DATA_DIR=/root/.config/lean-ctx" -w "!wslPath!" lean-ctx-bin-lean-ctx lean-ctx

@@ -7,10 +7,15 @@ Tutti i file descritti di seguito sono inclusi in questa cartella (`lean-ctx-bin
 
 ## 🚀 Primo Avvio (Setup Automatico)
 
-Per configurare l'ambiente locale al primo avvio su una nuova macchina:
+Per configurare l'ambiente locale al primo avvio su una nuova macchina, segui questi due passi:
 
-*   **Su Windows**: Esegui lo script `setup.bat` (doppio clic o da terminale). Lo script copierà i file necessari in `C:\Users\Public\lean-ctx` e creerà un file `.env` di default.
-*   **Su Linux**: Esegui lo script `setup.sh` da terminale (`./setup.sh`). Lo script copierà i file in `~/.config/lean-ctx` e creerà un file `.env` di default.
+### Passo 1 — Setup
+*   **Su Windows**: Esegui `setup.bat` (doppio clic o da terminale). Crea la cartella di configurazione e il file `.env`.
+*   **Su Linux**: Esegui `setup.sh` da terminale (`./setup.sh`). Crea `~/.config/lean-ctx` e il file `.env`.
+
+### Passo 2 — Build immagine Docker
+*   **Su Windows**: Esegui `build.bat`. Costruisce l'immagine Docker `lean-ctx-bin-lean-ctx`.
+*   **Su Linux**: Esegui `build.sh`. Costruisce l'immagine Docker `lean-ctx-bin-lean-ctx`.
 
 ---
 
@@ -21,8 +26,9 @@ Percorso file: `C:\Users\Public\lean-ctx\.env`
 Contenuto:
 ```env
 PROJECTS_DIR=C:\Users\tuo_utente\Desktop\progetti
+WSL_DISTRO=Ubuntu
 ```
-*(Modifica questo percorso se la cartella dei tuoi progetti si trova altrove su questa macchina).*
+*(Modifica `PROJECTS_DIR` con il percorso reale dei tuoi progetti e `WSL_DISTRO` con il nome esatto della tua distribuzione WSL, se diverso da `Ubuntu`).*
 
 ### 2. Configurazione `mcp_config.json`
 Aggiungere a `mcpServers` all'interno del file di configurazione dell'IDE:
@@ -48,7 +54,8 @@ PROJECTS_DIR=/home/tuo_utente/progetti
 ```
 
 ### 2. Configurazione `mcp_config.json`
-Aggiungere a `mcpServers` all'interno del file di configurazione dell'IDE (sostituendo `tuo_utente` con il tuo username reale su Linux):
+Aggiungere a `mcpServers` all'interno del file di configurazione dell'IDE.
+Sostituisci `/home/tuo_utente` con il tuo percorso home reale (usa `echo $HOME` nel terminale per ottenerlo):
 ```json
     "lean-ctx-docker": {
       "command": "/bin/bash",
