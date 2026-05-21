@@ -2,7 +2,8 @@
 setlocal enabledelayedexpansion
 
 :: Default PROJECTS_DIR
-set "PROJECTS_DIR=C:\Users\Feedweb F\Desktop\progetti"
+set "PROJECTS_DIR=%USERPROFILE%\Desktop\progetti"
+
 
 :: Load PROJECTS_DIR from .env if it exists
 if exist "C:\Users\Public\lean-ctx\.env" (

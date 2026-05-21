@@ -27,6 +27,6 @@ fi
 echo
 echo "=============================================="
 echo "Setup completato con successo!"
-echo "Ricorda di configurare mcp_config.json come descritto in readmy.md."
+echo "Ricorda di configurare mcp_config.json come descritto in readme.md."
 echo "=============================================="
 echo

@@ -20,7 +20,7 @@ Per configurare l'ambiente locale al primo avvio su una nuova macchina:
 Percorso file: `C:\Users\Public\lean-ctx\.env`
 Contenuto:
 ```env
-PROJECTS_DIR=C:\Users\Feedweb F\Desktop\progetti
+PROJECTS_DIR=C:\Users\tuo_utente\Desktop\progetti
 ```
 *(Modifica questo percorso se la cartella dei tuoi progetti si trova altrove su questa macchina).*
 
