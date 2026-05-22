@@ -83,6 +83,14 @@ child.on('close', (code) => {
   process.exit(code);
 });
 
+// Gestione della chiusura dello stream di input (quando l'IDE si chiude)
+ideReader.on('close', () => {
+  console.error("[LoopGuard] Stdin dell'IDE chiuso (EOF). Arresto del server lean-ctx...");
+  child.kill();
+  saveStats();
+  process.exit(0);
+});
+
 // 1. Gestione Richieste (IDE -> LoopGuard -> lean-ctx)
 ideReader.on('line', (line) => {
   if (!line.trim()) return;
