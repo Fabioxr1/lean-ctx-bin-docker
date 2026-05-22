@@ -39,8 +39,8 @@ if errorlevel 1 (
 )
 
 :: Converti il percorso Windows in percorso WSL per i progetti e la configurazione
-for /f "tokens=*" %%i in ('wsl -d !WSL_DISTRO! wslpath "%PROJECTS_DIR%" <nul') do set "wslPath=%%i"
-for /f "tokens=*" %%i in ('wsl -d !WSL_DISTRO! wslpath "C:\Users\Public\lean-ctx" <nul') do set "wslConfigPath=%%i"
+for /f "tokens=*" %%i in ('wsl -d !WSL_DISTRO! wslpath "%PROJECTS_DIR%" ^<nul') do set "wslPath=%%i"
+for /f "tokens=*" %%i in ('wsl -d !WSL_DISTRO! wslpath "C:\Users\Public\lean-ctx" ^<nul') do set "wslConfigPath=%%i"
 
 :: Verifica che wslPath non sia vuoto
 if "!wslPath!"=="" (

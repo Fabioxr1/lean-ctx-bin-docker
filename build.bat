@@ -4,7 +4,7 @@ echo Build immagine Docker: lean-ctx-bin-lean-ctx
 echo ==============================================
 echo.
 
-docker build -t lean-ctx-bin-lean-ctx "%~dp0"
+docker build -t lean-ctx-bin-lean-ctx "%~dp0."
 if errorlevel 1 (
     echo.
     echo [ERRORE] Build fallita. Verifica che Docker sia in esecuzione.
